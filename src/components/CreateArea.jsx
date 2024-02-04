@@ -1,23 +1,25 @@
 import React, { useState } from "react";
-import AddIcon from '@mui/icons-material/Add';
-import Fab from '@mui/material/Fab';
-import Zoom from '@mui/material/Zoom';
+import AddIcon from "@mui/icons-material/Add";
+import Fab from "@mui/material/Fab";
+import Zoom from "@mui/material/Zoom";
+import IconButton from "@mui/material/IconButton";
+import Tooltip from "@mui/material/Tooltip";
 
 function CreateArea(props) {
   const [isExpanded, setExpanded] = useState(false);
 
   const [note, setNote] = useState({
     title: "",
-    content: ""
+    content: "",
   });
 
   function handleChange(event) {
     const { name, value } = event.target;
 
-    setNote(prevNote => {
+    setNote((prevNote) => {
       return {
         ...prevNote,
-        [name]: value
+        [name]: value,
       };
     });
   }
@@ -26,7 +28,7 @@ function CreateArea(props) {
     props.onAdd(note);
     setNote({
       title: "",
-      content: ""
+      content: "",
     });
     event.preventDefault();
   }
@@ -55,11 +57,13 @@ function CreateArea(props) {
           placeholder="Take a note..."
           rows={isExpanded ? 3 : 1}
         />
-        <Zoom in={isExpanded}>
-          <Fab color="primary" aria-label="add" onClick={submitNote}>
-            <AddIcon />
-          </Fab>
-        </Zoom>
+        <Tooltip title="Add">
+          <Zoom in={isExpanded}>
+            <Fab color="primary" aria-label="add" onClick={submitNote}>
+              <AddIcon />
+            </Fab>
+          </Zoom>
+        </Tooltip>
       </form>
     </div>
   );
