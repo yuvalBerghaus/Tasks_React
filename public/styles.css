@@ -67,7 +67,6 @@ footer p {
   cursor: pointer;
   outline: none;
 }
-
 form.create-note {
   position: relative;
   width: 480px;
@@ -100,4 +99,9 @@ form.create-note button {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
   cursor: pointer;
   outline: none;
+}
+p.status {
+  font-weight: bold;
+  font-size: 12px;
+  display: inline;
 }

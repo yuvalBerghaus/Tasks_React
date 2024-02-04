@@ -29,17 +29,6 @@ function App() {
     });
   }
 
-  // function handleChange(event) {
-  //   const { name, value, type, checked } = event.target;
-  //   console.log(event.target.type);
-  //   setNotes((prevNote) => {
-  //     return {
-  //       ...prevNote,
-  //       [name]: type === "checkbox" ? checked : value,
-  //     };
-  //   });
-  // }
-
   function deleteNote(id) {
     setNotes((notes) => {
       return notes.filter((card) => card.id !== id);
@@ -60,7 +49,6 @@ function App() {
             checked={noteItem.checked}
             onDelete={deleteNote}
             onChange={updateNote}
-            // onUpdate={upda}
           />
         );
       })}

@@ -8,9 +8,8 @@ function Note(props) {
   function handleDelete() {
     props.onDelete(props.id);
   }
-  //TODO - HandleChange
+
   function handleChange() {
-    console.log("id in notes is " + props.id);
     props.onChange(props.id);
   }
   const label = { inputProps: { "aria-label": "Checkbox demo" } };
@@ -18,8 +17,10 @@ function Note(props) {
     <div className="note">
       <h1 contentEditable>{props.title}</h1>
       <p contentEditable>{props.content}</p>
-      {props.checked ? <p>{Status.COMPLETED}</p> : <p>{Status.INCOMPLETE}</p>}
       <Checkbox {...label} checked={props.checked} onChange={handleChange} />
+      <p className="status">
+        {props.checked ? Status.COMPLETED : Status.INCOMPLETE}
+      </p>
       <Tooltip title="Delete">
         <IconButton onClick={handleDelete}>
           <DeleteIcon />
