@@ -8,16 +8,41 @@ function App() {
   const [notes, setNotes] = useState([]);
 
   function addNote(newNote) {
-    setNotes(prevNotes => {
-      return [...prevNotes, newNote];
+    setNotes((notes) => {
+      return [...notes, newNote];
+    });
+  }
+  function updateNote(id) {
+    console.log("id in App is " + id);
+    setNotes((notes) => {
+      return notes.map((card) => {
+        console.log(card);
+        if (card.id === id) {
+          const newState = !card.checked;
+          return {
+            ...card,
+            checked: newState,
+          };
+        }
+        return card;
+      });
     });
   }
 
+  // function handleChange(event) {
+  //   const { name, value, type, checked } = event.target;
+  //   console.log(event.target.type);
+  //   setNotes((prevNote) => {
+  //     return {
+  //       ...prevNote,
+  //       [name]: type === "checkbox" ? checked : value,
+  //     };
+  //   });
+  // }
+
   function deleteNote(id) {
-    setNotes(prevNotes => {
-      return prevNotes.filter((noteItem, index) => {
-        return index !== id;
-      });
+    setNotes((notes) => {
+      return notes.filter((card) => card.id !== id);
     });
   }
 
@@ -25,14 +50,17 @@ function App() {
     <div>
       <Header />
       <CreateArea onAdd={addNote} />
-      {notes.map((noteItem, index) => {
+      {notes.map((noteItem) => {
         return (
           <Note
-            key={index}
-            id={index}
+            key={noteItem.id}
+            id={noteItem.id}
             title={noteItem.title}
             content={noteItem.content}
+            checked={noteItem.checked}
             onDelete={deleteNote}
+            onChange={updateNote}
+            // onUpdate={upda}
           />
         );
       })}

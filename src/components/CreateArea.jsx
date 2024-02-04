@@ -4,22 +4,24 @@ import Fab from "@mui/material/Fab";
 import Zoom from "@mui/material/Zoom";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
-
+import Checkbox from "@mui/material/Checkbox";
 function CreateArea(props) {
   const [isExpanded, setExpanded] = useState(false);
-
   const [note, setNote] = useState({
+    id: 0,
     title: "",
     content: "",
+    checked: false,
   });
 
-  function handleChange(event) {
-    const { name, value } = event.target;
+  const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
+  function handleChange(event) {
+    const { name, value, type, checked } = event.target;
     setNote((prevNote) => {
       return {
         ...prevNote,
-        [name]: value,
+        [name]: type === "checkbox" ? checked : value,
       };
     });
   }
@@ -27,8 +29,10 @@ function CreateArea(props) {
   function submitNote(event) {
     props.onAdd(note);
     setNote({
+      id: note.id + 1,
       title: "",
       content: "",
+      checked: false,
     });
     event.preventDefault();
   }
@@ -56,6 +60,13 @@ function CreateArea(props) {
           value={note.content}
           placeholder="Take a note..."
           rows={isExpanded ? 3 : 1}
+        />
+        {/* <p>{props.checked ? Status.COMPLETED : Status.INCOMPLETE}</p> */}
+        <Checkbox
+          name="checked"
+          {...label}
+          checked={note.checked}
+          onChange={handleChange}
         />
         <Tooltip title="Add">
           <Zoom in={isExpanded}>
