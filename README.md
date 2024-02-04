@@ -1,6 +1,6 @@
 # Getting Started with My APP
 <img width="439" alt="react-project" src="https://github.com/yuvalBerghaus/Tasks_React/assets/65304080/4baff01f-fba9-4944-a2c1-40b791f76c3e">
-\n
+<br />
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
