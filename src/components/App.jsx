@@ -6,7 +6,7 @@ import CreateArea from "./CreateArea";
 
 function App() {
   const [notes, setNotes] = useState([]);
-
+  const [next_id, setIdCounter] = useState(0);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -24,13 +24,17 @@ function App() {
           content: todo.title,
           checked: todo.completed,
         }));
-
+        // Find the maximum id using reduce
+        const maxId = formattedNotes.reduce(
+          (max, note) => Math.max(max, note.id),
+          0
+        );
+        setIdCounter(maxId + 1);
         setNotes(formattedNotes);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
-
     fetchData();
   }, []);
 
@@ -40,20 +44,39 @@ function App() {
     });
   }
 
-  function updateNote(id) {
-    setNotes((prevNotes) => {
-      return prevNotes.map((card) => {
-        if (card.id === id) {
-          const newState = !card.checked;
-          return {
-            ...card,
-            checked: newState,
-          };
+  const updateNote = async (id) => {
+    try {
+      setNotes((prevNotes) =>
+        prevNotes.map((card) => {
+          if (card.id === id) {
+            console.log("card.id " + card.id);
+            console.log("id " + id);
+            return {
+              ...card,
+              checked: !card.checked,
+            };
+          }
+          return card;
+        })
+      );
+      const response = await fetch(
+        `https://jsonplaceholder.typicode.com/posts/${id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(notes.at(id)), // Adjust the body as needed
         }
-        return card;
-      });
-    });
-  }
+      );
+      console.log(response);
+      if (!response.ok) {
+        throw new Error("Failed to update note");
+      }
+    } catch (error) {
+      console.error("Error updating note:", error);
+    }
+  };
 
   function deleteNote(id) {
     setNotes((prevNotes) => {
@@ -64,7 +87,7 @@ function App() {
   return (
     <div className="container">
       <Header />
-      <CreateArea onAdd={addNote} />
+      <CreateArea onAdd={addNote} next_id={next_id} />
       {notes.map((noteItem) => (
         <Note
           key={noteItem.id}

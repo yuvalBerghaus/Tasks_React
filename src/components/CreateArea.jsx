@@ -5,16 +5,16 @@ import Zoom from "@mui/material/Zoom";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import Checkbox from "@mui/material/Checkbox";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import { status, label } from "../constants";
 function CreateArea(props) {
   const [isExpanded, setExpanded] = useState(false);
   const [note, setNote] = useState({
-    id: 0,
+    id: props.next_id,
     title: "",
     content: "",
     checked: false,
   });
-
-  const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
   function handleChange(event) {
     const { name, value, type, checked } = event.target;
@@ -61,12 +61,16 @@ function CreateArea(props) {
           placeholder="Take a note..."
           rows={isExpanded ? 3 : 1}
         />
-        {/* <p>{props.checked ? Status.COMPLETED : Status.INCOMPLETE}</p> */}
-        <Checkbox
-          name="checked"
-          {...label}
-          checked={note.checked}
-          onChange={handleChange}
+        <FormControlLabel
+          control={
+            <Checkbox
+              name="checked"
+              {...label}
+              checked={note.checked}
+              onChange={handleChange}
+            />
+          }
+          label={note.checked ? status.COMPLETED : status.INCOMPLETE}
         />
         <Tooltip title="Add">
           <Zoom in={isExpanded}>

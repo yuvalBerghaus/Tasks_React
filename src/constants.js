@@ -1,5 +1,5 @@
-export const Status = {
+export const status = {
   COMPLETED: "Completed!",
   INCOMPLETE: "Incomplete",
 };
-export default Status;
+export const label = { inputProps: { "aria-label": "Checkbox demo" } };

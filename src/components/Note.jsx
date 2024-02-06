@@ -3,7 +3,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import Checkbox from "@mui/material/Checkbox";
-import Status from "../constants";
+import { status, label } from "../constants";
 function Note(props) {
   function handleDelete() {
     props.onDelete(props.id);
@@ -12,14 +12,13 @@ function Note(props) {
   function handleChange() {
     props.onChange(props.id);
   }
-  const label = { inputProps: { "aria-label": "Checkbox demo" } };
   return (
     <div className="note">
-      <h1 contentEditable>{props.title}</h1>
-      <p contentEditable>{props.content}</p>
+      <h1>{props.title}</h1>
+      <p>{props.content}</p>
       <Checkbox {...label} checked={props.checked} onChange={handleChange} />
       <p className="status">
-        {props.checked ? Status.COMPLETED : Status.INCOMPLETE}
+        {props.checked ? status.COMPLETED : status.INCOMPLETE}
       </p>
       <Tooltip title="Delete">
         <IconButton onClick={handleDelete}>
