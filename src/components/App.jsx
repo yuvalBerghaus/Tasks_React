@@ -40,34 +40,32 @@ function App() {
   }, []);
 
   function addNote(newNote) {
-    setNotes((prevNotes) => {
-      return [...prevNotes, newNote];
+    setNotes((notes) => {
+      return [...notes, newNote];
     });
   }
 
-  const updateNote = async (id) => {
+  const updateNote = async (_note) => {
     try {
-      setNotes((prevNotes) =>
-        prevNotes.map((card) => {
-          if (card.id === id) {
-            console.log("card.id " + card.id);
-            console.log("id " + id);
-            return {
-              ...card,
-              checked: !card.checked,
-            };
-          }
-          return card;
-        })
+      // Create a new array with the updated note
+      const updatedNotes = notes.map((note) =>
+        note.id === _note.id ? _note : note
       );
-      const response = await fetch(`${api_link}/${id}`, {
+
+      // Set the state with the new array
+      setNotes(updatedNotes);
+
+      // Make the API request to update the note
+      const response = await fetch(`${api_link}/${_note.id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(notes.at(id)), // Adjust the body as needed
+        body: JSON.stringify(_note),
       });
+
       console.log(response);
+
       if (!response.ok) {
         throw new Error("Failed to update note");
       }
@@ -87,9 +85,8 @@ function App() {
         if (!response.ok) {
           throw new Error("Failed to delete note");
         }
-
         // If the request is successful, update the state
-        setNotes((prevNotes) => prevNotes.filter((card) => card.id !== id));
+        setNotes((notes) => notes.filter((card) => card.id !== id));
       } catch (error) {
         console.error("Error deleting note:", error);
       }

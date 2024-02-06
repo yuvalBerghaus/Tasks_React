@@ -18,9 +18,9 @@ function CreateArea(props) {
 
   function handleChange(event) {
     const { name, value, type, checked } = event.target;
-    setNote((prevNote) => {
+    setNote((note) => {
       return {
-        ...prevNote,
+        ...note,
         [name]: type === "checkbox" ? checked : value,
       };
     });

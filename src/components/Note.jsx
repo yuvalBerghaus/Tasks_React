@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
@@ -9,14 +9,28 @@ function Note(props) {
     props.onDelete(props.id);
   }
 
-  function handleChange() {
-    props.onChange(props.id);
+  function handleChange(task) {
+    props.onChange(task);
   }
+  function changeCheckBox() {
+    setTask((task) => ({
+      ...task,
+      checked: !task.checked,
+    }));
+    handleChange(task);
+  }
+  const [task, setTask] = useState({
+    id: props.id,
+    title: props.title,
+    content: props.content,
+    checked: !props.checked,
+  });
+
   return (
     <div className="note">
-      <h1>{props.title}</h1>
+      <h2>{props.title}</h2>
       <p>{props.content}</p>
-      <Checkbox {...label} checked={props.checked} onChange={handleChange} />
+      <Checkbox {...label} checked={props.checked} onChange={changeCheckBox} />
       <p className="status">
         {props.checked ? status.COMPLETED : status.INCOMPLETE}
       </p>
