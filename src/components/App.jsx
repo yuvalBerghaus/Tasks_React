@@ -3,10 +3,11 @@ import Header from "./Header";
 import Footer from "./Footer";
 import Note from "./Note";
 import CreateArea from "./CreateArea";
-
+import { api_link } from "../constants";
 function App() {
   const [notes, setNotes] = useState([]);
   const [next_id, setIdCounter] = useState(0);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -59,16 +60,13 @@ function App() {
           return card;
         })
       );
-      const response = await fetch(
-        `https://jsonplaceholder.typicode.com/posts/${id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(notes.at(id)), // Adjust the body as needed
-        }
-      );
+      const response = await fetch(`${api_link}/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(notes.at(id)), // Adjust the body as needed
+      });
       console.log(response);
       if (!response.ok) {
         throw new Error("Failed to update note");
@@ -79,11 +77,27 @@ function App() {
   };
 
   function deleteNote(id) {
-    setNotes((prevNotes) => {
-      return prevNotes.filter((card) => card.id !== id);
-    });
-  }
+    // Assuming you have an async function to handle the DELETE request
+    const handleDelete = async () => {
+      try {
+        const response = await fetch(`${api_link}/${id}`, {
+          method: "DELETE",
+        });
 
+        if (!response.ok) {
+          throw new Error("Failed to delete note");
+        }
+
+        // If the request is successful, update the state
+        setNotes((prevNotes) => prevNotes.filter((card) => card.id !== id));
+      } catch (error) {
+        console.error("Error deleting note:", error);
+      }
+    };
+
+    // Call the async function to send the DELETE request
+    handleDelete();
+  }
   return (
     <div className="container">
       <Header />

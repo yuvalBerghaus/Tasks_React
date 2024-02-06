@@ -29,11 +29,12 @@ function CreateArea(props) {
   function submitNote(event) {
     props.onAdd(note);
     setNote({
-      id: note.id + 1,
+      id: props.next_id + 1,
       title: "",
       content: "",
       checked: false,
     });
+    console.log("updated note id for createarea is " + props.next_id);
     event.preventDefault();
   }
 
