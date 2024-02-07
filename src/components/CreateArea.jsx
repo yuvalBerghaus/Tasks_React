@@ -65,7 +65,7 @@ function CreateArea(props) {
             <Checkbox
               name="checked"
               {...LABEL}
-              checked={note[TASK_OBJ.CHECKED]}
+              checked={note[TASK_OBJ.CHECKED] || false}
               onChange={handleChange}
             />
           }
