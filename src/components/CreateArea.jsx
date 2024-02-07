@@ -13,11 +13,12 @@ function CreateArea(props) {
     [TASK_OBJ.CONTENT]: "",
     [TASK_OBJ.CHECKED]: false,
   });
+
   function handleChange(event) {
     const { name, value, type, checked } = event.target;
-    setNote((note) => {
+    setNote((prevNote) => {
       return {
-        ...note,
+        ...prevNote,
         [name]: type === "checkbox" ? checked : value,
       };
     });
