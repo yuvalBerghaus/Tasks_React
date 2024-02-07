@@ -4,6 +4,7 @@ import Footer from "./Footer";
 import Note from "./Note";
 import CreateArea from "./CreateArea";
 import { API_LINK, TASK_OBJ, METHOD } from "../constants";
+import { Task } from "@mui/icons-material";
 function App() {
   const [notes, setNotes] = useState([]);
   const [next_id, setIdCounter] = useState(0);
@@ -21,8 +22,9 @@ function App() {
           [TASK_OBJ.ID]: todo[TASK_OBJ.ID],
           [TASK_OBJ.TITLE]: todo[TASK_OBJ.TITLE],
           [TASK_OBJ.CONTENT]: todo[TASK_OBJ.TITLE],
-          [TASK_OBJ.CHECKED]: todo[TASK_OBJ.CHECKED],
+          [TASK_OBJ.CHECKED]: todo["completed"], // THE KEY OF THE JSONPLACEHOLDER SITE
         }));
+
         // Find the maximum id using reduce
         const maxId = formattedNotes.reduce(
           (max, note) => Math.max(max, note[TASK_OBJ.ID]),
@@ -38,9 +40,37 @@ function App() {
   }, []);
 
   function addNote(newNote) {
-    setNotes((notes) => {
-      return [...notes, newNote];
-    });
+    // Increment the counter and assign a new ID to the new note
+    setIdCounter((prevId) => prevId + 1);
+    newNote[TASK_OBJ.ID] = next_id;
+
+    // Log the new note for debugging purposes
+    console.log("New Note:", newNote);
+
+    // Update the state with the new note
+    setNotes((prevNotes) => [...prevNotes, newNote]);
+
+    // Perform a POST request to the API to add the new note
+    const postNewNote = async () => {
+      try {
+        const response = await fetch(API_LINK, {
+          method: METHOD.POST,
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(newNote),
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to add note");
+        }
+      } catch (error) {
+        console.error("Error adding note:", error);
+      }
+    };
+
+    // Call the function to perform the POST request
+    postNewNote();
   }
 
   const updateNote = async (_note) => {
@@ -61,8 +91,6 @@ function App() {
         },
         body: JSON.stringify(_note),
       });
-
-      console.log(response);
 
       if (!response.ok) {
         throw new Error("Failed to update note");
@@ -96,7 +124,7 @@ function App() {
   return (
     <div className="container">
       <Header />
-      <CreateArea onAdd={addNote} {...{ [TASK_OBJ.ID]: next_id }} />
+      <CreateArea onAdd={addNote} />
       {notes.map((noteItem) => (
         <Note
           key={noteItem[TASK_OBJ.ID]}

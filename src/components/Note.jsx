@@ -5,6 +5,12 @@ import Tooltip from "@mui/material/Tooltip";
 import Checkbox from "@mui/material/Checkbox";
 import { STATUS, LABEL, TASK_OBJ } from "../constants";
 function Note(props) {
+  const [task, setTask] = useState({
+    [TASK_OBJ.ID]: props[TASK_OBJ.ID],
+    [TASK_OBJ.TITLE]: props[TASK_OBJ.TITLE],
+    [TASK_OBJ.CONTENT]: props[TASK_OBJ.CONTENT],
+    [TASK_OBJ.CHECKED]: props[TASK_OBJ.CHECKED],
+  });
   function handleDelete() {
     props.onDelete(props[TASK_OBJ.ID]);
   }
@@ -13,21 +19,12 @@ function Note(props) {
     props.onChange(task);
   }
   function changeCheckBox() {
-    setTask((prevTask) => {
-      const updatedTask = {
-        ...prevTask,
-        [TASK_OBJ.CHECKED]: !prevTask[TASK_OBJ.CHECKED],
-      };
-      handleChange(updatedTask);
-      return updatedTask;
-    });
+    setTask((task) => ({
+      ...task,
+      [TASK_OBJ.CHECKED]: !task[TASK_OBJ.CHECKED],
+    }));
+    handleChange(task);
   }
-  const [task, setTask] = useState({
-    [TASK_OBJ.ID]: props[TASK_OBJ.ID],
-    [TASK_OBJ.TITLE]: props[TASK_OBJ.TITLE],
-    [TASK_OBJ.CONTENT]: props[TASK_OBJ.CONTENT],
-    [TASK_OBJ.CHECKED]: !props[TASK_OBJ.CHECKED],
-  });
 
   return (
     <div className="note">

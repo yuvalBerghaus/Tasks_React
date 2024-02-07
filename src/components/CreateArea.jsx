@@ -9,12 +9,10 @@ import { STATUS, LABEL, TASK_OBJ } from "../constants";
 function CreateArea(props) {
   const [isExpanded, setExpanded] = useState(false);
   const [note, setNote] = useState({
-    [TASK_OBJ.ID]: props[TASK_OBJ.ID],
     [TASK_OBJ.TITLE]: "",
     [TASK_OBJ.CONTENT]: "",
     [TASK_OBJ.CHECKED]: false,
   });
-
   function handleChange(event) {
     const { name, value, type, checked } = event.target;
     setNote((note) => {
@@ -28,7 +26,6 @@ function CreateArea(props) {
   function submitNote(event) {
     props.onAdd(note);
     setNote({
-      [TASK_OBJ.ID]: props[TASK_OBJ.ID] + 1,
       [TASK_OBJ.TITLE]: "",
       [TASK_OBJ.CONTENT]: "",
       [TASK_OBJ.CHECKED]: false,
