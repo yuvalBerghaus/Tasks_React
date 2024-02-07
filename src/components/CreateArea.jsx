@@ -2,18 +2,17 @@ import React, { useState } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import Fab from "@mui/material/Fab";
 import Zoom from "@mui/material/Zoom";
-import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import { status, label } from "../constants";
+import { STATUS, LABEL, TASK_OBJ } from "../constants";
 function CreateArea(props) {
   const [isExpanded, setExpanded] = useState(false);
   const [note, setNote] = useState({
-    id: props.next_id,
-    title: "",
-    content: "",
-    checked: false,
+    [TASK_OBJ.ID]: props[TASK_OBJ.ID],
+    [TASK_OBJ.TITLE]: "",
+    [TASK_OBJ.CONTENT]: "",
+    [TASK_OBJ.CHECKED]: false,
   });
 
   function handleChange(event) {
@@ -29,12 +28,11 @@ function CreateArea(props) {
   function submitNote(event) {
     props.onAdd(note);
     setNote({
-      id: props.next_id + 1,
-      title: "",
-      content: "",
-      checked: false,
+      [TASK_OBJ.ID]: props[TASK_OBJ.ID] + 1,
+      [TASK_OBJ.TITLE]: "",
+      [TASK_OBJ.CONTENT]: "",
+      [TASK_OBJ.CHECKED]: false,
     });
-    console.log("updated note id for createarea is " + props.next_id);
     event.preventDefault();
   }
 
@@ -47,18 +45,18 @@ function CreateArea(props) {
       <form className="create-note">
         {isExpanded && (
           <input
-            name="title"
+            name={TASK_OBJ.TITLE}
             onChange={handleChange}
-            value={note.title}
+            value={note[TASK_OBJ.TITLE]}
             placeholder="Title"
           />
         )}
 
         <textarea
-          name="content"
+          name={TASK_OBJ.CONTENT}
           onClick={expand}
           onChange={handleChange}
-          value={note.content}
+          value={note[TASK_OBJ.CONTENT]}
           placeholder="Take a note..."
           rows={isExpanded ? 3 : 1}
         />
@@ -66,12 +64,12 @@ function CreateArea(props) {
           control={
             <Checkbox
               name="checked"
-              {...label}
-              checked={note.checked}
+              {...LABEL}
+              checked={note[TASK_OBJ.CHECKED]}
               onChange={handleChange}
             />
           }
-          label={note.checked ? status.COMPLETED : status.INCOMPLETE}
+          label={note[TASK_OBJ.CHECKED] ? STATUS.COMPLETED : STATUS.INCOMPLETE}
         />
         <Tooltip title="Add">
           <Zoom in={isExpanded}>

@@ -3,10 +3,10 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import Checkbox from "@mui/material/Checkbox";
-import { status, label } from "../constants";
+import { STATUS, LABEL, TASK_OBJ } from "../constants";
 function Note(props) {
   function handleDelete() {
-    props.onDelete(props.id);
+    props.onDelete(props[TASK_OBJ.ID]);
   }
 
   function handleChange(task) {
@@ -15,24 +15,28 @@ function Note(props) {
   function changeCheckBox() {
     setTask((task) => ({
       ...task,
-      checked: !task.checked,
+      [TASK_OBJ.CHECKED]: !task[TASK_OBJ.CHECKED],
     }));
     handleChange(task);
   }
   const [task, setTask] = useState({
-    id: props.id,
-    title: props.title,
-    content: props.content,
-    checked: !props.checked,
+    [TASK_OBJ.ID]: props[TASK_OBJ.ID],
+    [TASK_OBJ.TITLE]: props[TASK_OBJ.TITLE],
+    [TASK_OBJ.CONTENT]: props[TASK_OBJ.CONTENT],
+    [TASK_OBJ.CHECKED]: !props[TASK_OBJ.CHECKED],
   });
 
   return (
     <div className="note">
-      <h2>{props.title}</h2>
-      <p>{props.content}</p>
-      <Checkbox {...label} checked={props.checked} onChange={changeCheckBox} />
+      <h2>{props[TASK_OBJ.TITLE]}</h2>
+      <p>{props[TASK_OBJ.CONTENT]}</p>
+      <Checkbox
+        {...LABEL}
+        checked={props[TASK_OBJ.CHECKED]}
+        onChange={changeCheckBox}
+      />
       <p className="status">
-        {props.checked ? status.COMPLETED : status.INCOMPLETE}
+        {props[TASK_OBJ.CHECKED] ? STATUS.COMPLETED : STATUS.INCOMPLETE}
       </p>
       <Tooltip title="Delete">
         <IconButton onClick={handleDelete}>
