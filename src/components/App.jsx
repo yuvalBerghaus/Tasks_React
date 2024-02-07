@@ -5,13 +5,13 @@ import Footer from "./Footer";
 import Note from "./Note";
 import CreateArea from "./CreateArea";
 import { fetchData, addNewNote, updateNoteById, deleteNoteById } from "../api";
-import { TASK_OBJ } from "../constants";
-import { Task } from "@mui/icons-material";
-
+import { SORT, TASK_OBJ } from "../constants";
+import BasicSelect from "./BasicSelect";
 function App() {
   const [notes, setNotes] = useState([]);
   const [next_id, setIdCounter] = useState(0);
-
+  const [sortOrder, setSortOrder] = useState(SORT.ASCENDING); // 'asc' or 'desc'
+  const [sortedNotes, setSortedNotes] = useState([]);
   useEffect(() => {
     const fetchNotesData = async () => {
       try {
@@ -22,6 +22,7 @@ function App() {
           [TASK_OBJ.TITLE]: todo[TASK_OBJ.TITLE],
           [TASK_OBJ.CONTENT]: todo[TASK_OBJ.TITLE],
           [TASK_OBJ.CHECKED]: todo["completed"],
+          [TASK_OBJ.CREATED_AT]: getCurrentDateMinusOneDay(),
         }));
 
         const maxId = formattedNotes.reduce(
@@ -30,6 +31,7 @@ function App() {
         );
         setIdCounter(maxId + 1);
         setNotes(formattedNotes);
+        setSortedNotes(formattedNotes);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -45,6 +47,7 @@ function App() {
     console.log("New Note:", newNote);
 
     setNotes((prevNotes) => [...prevNotes, newNote]);
+    setSortedNotes((prevSortedNotes) => [...prevSortedNotes, newNote]);
 
     const postNewNote = async () => {
       try {
@@ -84,11 +87,47 @@ function App() {
     handleDelete();
   }
 
+  useEffect(() => {
+    // Sort the notes whenever sortOrder changes
+    sortNotes();
+  }, [sortOrder, notes]);
+
+  const sortNotes = () => {
+    const sorted = [...notes];
+
+    if (sortOrder === SORT.ASCENDING) {
+      sorted.sort(
+        (a, b) =>
+          new Date(a[TASK_OBJ.CREATED_AT]) - new Date(b[TASK_OBJ.CREATED_AT])
+      );
+    } else {
+      sorted.sort(
+        (a, b) =>
+          new Date(b[TASK_OBJ.CREATED_AT]) - new Date(a[TASK_OBJ.CREATED_AT])
+      );
+    }
+
+    setSortedNotes(sorted);
+  };
+
+  function getCurrentDateMinusOneDay() {
+    const currentDate = new Date();
+    const oneDayInMilliseconds = 24 * 60 * 60 * 1000; // 1 day in milliseconds
+    const currentDateMinusOneDay = new Date(
+      currentDate.getTime() - oneDayInMilliseconds
+    );
+
+    return currentDateMinusOneDay;
+  }
+
   return (
     <div className="container">
       <Header />
       <CreateArea onAdd={addNote} />
-      {notes.map((noteItem) => (
+      <div className="basic_select">
+        <BasicSelect />
+      </div>
+      {sortedNotes.map((noteItem) => (
         <Note
           key={noteItem[TASK_OBJ.ID]}
           id={noteItem[TASK_OBJ.ID]}

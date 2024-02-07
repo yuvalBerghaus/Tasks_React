@@ -4,6 +4,7 @@ import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import Checkbox from "@mui/material/Checkbox";
 import { STATUS, LABEL, TASK_OBJ } from "../constants";
+
 function Note(props) {
   const [task, setTask] = useState({
     [TASK_OBJ.ID]: props[TASK_OBJ.ID],
@@ -11,25 +12,69 @@ function Note(props) {
     [TASK_OBJ.CONTENT]: props[TASK_OBJ.CONTENT],
     [TASK_OBJ.CHECKED]: props[TASK_OBJ.CHECKED],
   });
+
   function handleDelete() {
-    props.onDelete(props[TASK_OBJ.ID]);
+    // Show confirmation prompt
+    const shouldDelete = window.confirm(
+      "Are you sure you want to delete this task?"
+    );
+
+    if (shouldDelete) {
+      props.onDelete(task[TASK_OBJ.ID]);
+    }
   }
 
-  function handleChange(task) {
-    props.onChange(task);
+  function handleChange(name, value) {
+    setTask((prevTask) => ({
+      ...prevTask,
+      [name]: value,
+    }));
   }
+
+  function validateAndUpdate(name, value) {
+    // Validate not empty before updating
+    if (value.trim() === "") {
+      alert(`${name} cannot be empty.`);
+      setTask((prevTask) => ({
+        ...prevTask,
+        [name]: props[TASK_OBJ[name]], // Revert to previous value
+      }));
+    } else {
+      handleChange(name, value);
+      props.onChange(task);
+    }
+  }
+
   function changeCheckBox() {
-    setTask((task) => ({
+    const updatedTask = {
       ...task,
       [TASK_OBJ.CHECKED]: !task[TASK_OBJ.CHECKED],
-    }));
-    handleChange(task);
+    };
+
+    setTask(updatedTask);
+    props.onChange(updatedTask);
   }
 
   return (
     <div className="note">
-      <h2>{task[TASK_OBJ.TITLE]}</h2>
-      <p>{task[TASK_OBJ.CONTENT]}</p>
+      <h2
+        contentEditable
+        suppressContentEditableWarning={true}
+        onBlur={(event) =>
+          validateAndUpdate(TASK_OBJ.TITLE, event.target.textContent)
+        }
+      >
+        {task[TASK_OBJ.TITLE]}
+      </h2>
+      <p
+        contentEditable
+        suppressContentEditableWarning={true}
+        onBlur={(event) =>
+          validateAndUpdate(TASK_OBJ.CONTENT, event.target.textContent)
+        }
+      >
+        {task[TASK_OBJ.CONTENT]}
+      </p>
       <Checkbox
         {...LABEL}
         checked={task[TASK_OBJ.CHECKED]}

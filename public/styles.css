@@ -36,6 +36,13 @@ footer {
 footer p {
   color: #ccc;
 }
+
+.basic_select {
+  width: 25%;
+  margin-left: 50%;
+  transform: translate(-50%, -10%);
+}
+
 .note {
   background: #fff;
   border-radius: 7px;

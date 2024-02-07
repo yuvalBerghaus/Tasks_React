@@ -46,6 +46,7 @@ async function updateNoteById(noteId, updatedNote) {
     if (!response.ok) {
       throw new Error("Failed to update note");
     }
+    console.log(response);
   } catch (error) {
     console.error("Error updating note:", error);
     throw error;
