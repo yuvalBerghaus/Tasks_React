@@ -1,6 +1,7 @@
 # Tasks App
 
 <img width="947" alt="Screenshot 2024-02-08 073124" src="https://github.com/yuvalBerghaus/Tasks_React/assets/65304080/297f3f06-b46f-4bd6-b96a-6fe3f0e583ca">
+![Recording 2024-02-08 101940](https://github.com/yuvalBerghaus/Tasks_React/assets/65304080/2b73a9d1-cd01-4de2-bb4a-d324a5117dab)
 
 ## Key Features:
 
