@@ -15,7 +15,7 @@
    npm start<br />
    Open your browser and visit http://localhost:3000.
 ### important note!
-   the mock server's link is located in constants.js file - do not change it
+   the mock server's link is located in constants.js file - do not change it<br>
 <img width="947" alt="Screenshot 2024-02-08 073124" src="https://github.com/yuvalBerghaus/Tasks_React/assets/65304080/297f3f06-b46f-4bd6-b96a-6fe3f0e583ca">
 <br /><br />
 
