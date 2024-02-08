@@ -52,6 +52,13 @@ footer p {
   margin: 16px;
   float: left;
 }
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .note h2 {
   font-size: 1.1em;
   margin-bottom: 6px;

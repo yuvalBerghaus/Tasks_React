@@ -7,6 +7,8 @@ import CreateArea from "./CreateArea";
 import { fetchData, addNewNote, updateNoteById, deleteNoteById } from "../api";
 import { TASK_OBJ, SORT } from "../constants";
 import BasicSelect from "./BasicSelect";
+import Box from "@mui/material/Box";
+import CircularProgress from "@mui/material/CircularProgress";
 
 function App() {
   const { ASCENDING, DESCENDING } = SORT;
@@ -14,12 +16,14 @@ function App() {
   const [next_id, setIdCounter] = useState(0);
   const [sortOrder, setSortOrder] = useState(ASCENDING); // 'asc' or 'desc'
   const [sortedNotes, setSortedNotes] = useState([]);
+  const [loading, setLoading] = useState(true); // Added loading state
 
   const { ID, TITLE, CONTENT, CHECKED, CREATED_AT } = TASK_OBJ;
 
   useEffect(() => {
     const fetchNotesData = async () => {
       try {
+        setLoading(true); // Set loading state to true while fetching data
         const todos = await fetchData();
 
         const formattedNotes = todos.map((todo) => ({
@@ -36,8 +40,10 @@ function App() {
         setIdCounter(maxId + 1);
         setNotes(formattedNotes);
         setSortedNotes(formattedNotes);
+        setLoading(false); // Set loading state to false after fetching data
       } catch (error) {
         console.error("Error fetching data:", error);
+        setLoading(false); // Set loading state to false in case of an error
       }
     };
 
@@ -142,20 +148,31 @@ function App() {
       <div className="basic_select">
         <BasicSelect OnSortChange={handleSortChange} />
       </div>
-      {sortedNotes.map((noteItem) => (
-        <Note
-          key={noteItem[ID]}
-          id={noteItem[ID]}
-          {...{
-            [TITLE]: noteItem[TITLE],
-            [CONTENT]: noteItem[CONTENT],
-            [CHECKED]: noteItem[CHECKED],
-            [CREATED_AT]: noteItem[CREATED_AT],
-          }}
-          onDelete={deleteNote}
-          onChange={updateNote}
-        />
-      ))}
+
+      {loading ? (
+        // Loading UI
+
+        <div class="loading">
+          <CircularProgress size="10rem" disableShrink />;
+        </div>
+      ) : (
+        // Actual content
+        sortedNotes.map((noteItem) => (
+          <Note
+            key={noteItem[ID]}
+            id={noteItem[ID]}
+            {...{
+              [TITLE]: noteItem[TITLE],
+              [CONTENT]: noteItem[CONTENT],
+              [CHECKED]: noteItem[CHECKED],
+              [CREATED_AT]: noteItem[CREATED_AT],
+            }}
+            onDelete={deleteNote}
+            onChange={updateNote}
+          />
+        ))
+      )}
+
       <Footer />
     </div>
   );

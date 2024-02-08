@@ -40,6 +40,9 @@ export default function BasicSelect(props) {
           <MenuItem value={`${DESCENDING}_${CHECKED}`}>
             {CHECKED} : {DESCENDING}
           </MenuItem>
+          <MenuItem value={`${ASCENDING}_${CHECKED}`}>
+            {CHECKED} : {ASCENDING}
+          </MenuItem>
         </Select>
       </FormControl>
     </Box>
