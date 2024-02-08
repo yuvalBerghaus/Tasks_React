@@ -4,7 +4,7 @@
 
 ## Key Features:
 
-- **Intuitive Task Management:** Easily create, update, and delete tasks with a user-friendly interface.
+- **Intuitive Task Management:** Easily create, update (by clicking on each task item - title or description will allow u to update), and delete tasks with a user-friendly interface.
 - **Sorting and Filtering:** Organize your tasks by various criteria and customize the view according to your preferences.
 
 ## How to Get Started:
