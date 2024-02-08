@@ -9,7 +9,7 @@
 ## How to Get Started:
 
 1. **Clone this repository to your local machine:**
-git clone https://github.com/yuvalBerghaus/Tasks_React
+git clone https://github.com/yuvalBerghaus/Tasks_React.git
 2. **Install the necessary dependencies using npm:**
 npm install
 3. **Start the development server:**
