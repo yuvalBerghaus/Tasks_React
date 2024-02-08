@@ -1,15 +1,16 @@
-// api.js
 import { API_LINK, METHOD } from "./constants";
 
 async function fetchData() {
   try {
     const response = await fetch(API_LINK);
+
     if (!response.ok) {
-      throw new Error("Network response was not ok");
+      throw new Error(`Failed to fetch data. Status: ${response.status}`);
     }
+
     return await response.json();
   } catch (error) {
-    console.error("Error fetching data:", error);
+    console.error("Error fetching data:", error.message);
     throw error;
   }
 }
@@ -25,10 +26,10 @@ async function addNewNote(newNote) {
     });
 
     if (!response.ok) {
-      throw new Error("Failed to add note");
+      throw new Error(`Failed to add note. Status: ${response.status}`);
     }
   } catch (error) {
-    console.error("Error adding note:", error);
+    console.error("Error adding note:", error.message);
     throw error;
   }
 }
@@ -44,11 +45,11 @@ async function updateNoteById(noteId, updatedNote) {
     });
 
     if (!response.ok) {
-      throw new Error("Failed to update note");
+      throw new Error(`Failed to update note. Status: ${response.status}`);
     }
     console.log(response);
   } catch (error) {
-    console.error("Error updating note:", error);
+    console.error("Error updating note:", error.message);
     throw error;
   }
 }
@@ -60,10 +61,10 @@ async function deleteNoteById(noteId) {
     });
 
     if (!response.ok) {
-      throw new Error("Failed to delete note");
+      throw new Error(`Failed to delete note. Status: ${response.status}`);
     }
   } catch (error) {
-    console.error("Error deleting note:", error);
+    console.error("Error deleting note:", error.message);
     throw error;
   }
 }
