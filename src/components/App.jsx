@@ -5,27 +5,31 @@ import Footer from "./Footer";
 import Note from "./Note";
 import CreateArea from "./CreateArea";
 import { fetchData, addNewNote, updateNoteById, deleteNoteById } from "../api";
-import { SORT, TASK_OBJ } from "../constants";
+import { TASK_OBJ, SORT } from "../constants";
 import BasicSelect from "./BasicSelect";
+
 function App() {
   const [notes, setNotes] = useState([]);
   const [next_id, setIdCounter] = useState(0);
   const [sortOrder, setSortOrder] = useState(SORT.ASCENDING); // 'asc' or 'desc'
   const [sortedNotes, setSortedNotes] = useState([]);
+
+  const { ID, TITLE, CONTENT, CHECKED, CREATED_AT, WARNING } = TASK_OBJ;
+
   useEffect(() => {
     const fetchNotesData = async () => {
       try {
         const todos = await fetchData();
 
         const formattedNotes = todos.map((todo) => ({
-          [TASK_OBJ.ID]: todo[TASK_OBJ.ID],
-          [TASK_OBJ.TITLE]: todo[TASK_OBJ.TITLE],
-          [TASK_OBJ.CONTENT]: todo[TASK_OBJ.CONTENT],
-          [TASK_OBJ.CHECKED]: todo["completed"],
-          [TASK_OBJ.CREATED_AT]: todo[TASK_OBJ.CREATED_AT],
+          [ID]: todo[ID],
+          [TITLE]: todo[TITLE],
+          [CONTENT]: todo[CONTENT],
+          [CHECKED]: todo["completed"],
+          [CREATED_AT]: todo[CREATED_AT],
         }));
         const maxId = formattedNotes.reduce(
-          (max, note) => Math.max(max, note[TASK_OBJ.ID]),
+          (max, note) => Math.max(max, note[ID]),
           0
         );
         setIdCounter(maxId + 1);
@@ -38,12 +42,13 @@ function App() {
 
     fetchNotesData();
   }, []);
+
   function addNote(newNote) {
     setIdCounter((prevId) => prevId + 1);
-    newNote[TASK_OBJ.ID] = next_id;
+    newNote[ID] = next_id;
 
     // Corrected: Invoke new Date() to get the current date object
-    newNote[TASK_OBJ.CREATED_AT] = new Date();
+    newNote[CREATED_AT] = new Date();
 
     console.log("New Note:", newNote);
     setNotes((prevNotes) => [...prevNotes, newNote]);
@@ -63,12 +68,12 @@ function App() {
   const updateNote = async (_note) => {
     try {
       const updatedNotes = notes.map((note) =>
-        note[TASK_OBJ.ID] === _note[TASK_OBJ.ID] ? _note : note
+        note[ID] === _note[ID] ? _note : note
       );
 
       setNotes(updatedNotes);
 
-      await updateNoteById(_note[TASK_OBJ.ID], _note);
+      await updateNoteById(_note[ID], _note);
     } catch (error) {
       console.error("Error updating note:", error);
     }
@@ -78,7 +83,7 @@ function App() {
     const handleDelete = async () => {
       try {
         await deleteNoteById(id);
-        setNotes((notes) => notes.filter((card) => card[TASK_OBJ.ID] !== id));
+        setNotes((notes) => notes.filter((card) => card[ID] !== id));
       } catch (error) {
         console.error("Error deleting note:", error);
       }
@@ -96,22 +101,20 @@ function App() {
     let sortedNotesCopy = [...notes];
     // TODO
     switch (sortOrder) {
-      case `${SORT.DESCENDING}_${TASK_OBJ.ID}`:
-        sortedNotesCopy.sort((a, b) => b[TASK_OBJ.ID] - a[TASK_OBJ.ID]);
+      case `${SORT.DESCENDING}_${ID}`:
+        sortedNotesCopy.sort((a, b) => b[ID] - a[ID]);
         break;
-      case `${SORT.ASCENDING}_${TASK_OBJ.ID}`:
-        sortedNotesCopy.sort((a, b) => a[TASK_OBJ.ID] - b[TASK_OBJ.ID]);
+      case `${SORT.ASCENDING}_${ID}`:
+        sortedNotesCopy.sort((a, b) => a[ID] - b[ID]);
         break;
-      case `${SORT.DESCENDING}_${TASK_OBJ.CREATED_AT}`:
+      case `${SORT.DESCENDING}_${CREATED_AT}`:
         sortedNotesCopy.sort(
-          (a, b) =>
-            new Date(b[TASK_OBJ.CREATED_AT]) - new Date(a[TASK_OBJ.CREATED_AT])
+          (a, b) => new Date(b[CREATED_AT]) - new Date(a[CREATED_AT])
         );
         break;
-      case `${SORT.ASCENDING}_${TASK_OBJ.CREATED_AT}`:
+      case `${SORT.ASCENDING}_${CREATED_AT}`:
         sortedNotesCopy.sort(
-          (a, b) =>
-            new Date(a[TASK_OBJ.CREATED_AT]) - new Date(b[TASK_OBJ.CREATED_AT])
+          (a, b) => new Date(a[CREATED_AT]) - new Date(b[CREATED_AT])
         );
         break;
       default:
@@ -119,10 +122,12 @@ function App() {
 
     setSortedNotes(sortedNotesCopy);
   };
+
   function handleSortChange(sortParams) {
     console.log(sortParams);
     setSortOrder(sortParams);
   }
+
   return (
     <div className="container">
       <Header />
@@ -132,13 +137,13 @@ function App() {
       </div>
       {sortedNotes.map((noteItem) => (
         <Note
-          key={noteItem[TASK_OBJ.ID]}
-          id={noteItem[TASK_OBJ.ID]}
+          key={noteItem[ID]}
+          id={noteItem[ID]}
           {...{
-            [TASK_OBJ.TITLE]: noteItem[TASK_OBJ.TITLE],
-            [TASK_OBJ.CONTENT]: noteItem[TASK_OBJ.CONTENT],
-            [TASK_OBJ.CHECKED]: noteItem[TASK_OBJ.CHECKED],
-            [TASK_OBJ.CREATED_AT]: noteItem[TASK_OBJ.CREATED_AT],
+            [TITLE]: noteItem[TITLE],
+            [CONTENT]: noteItem[CONTENT],
+            [CHECKED]: noteItem[CHECKED],
+            [CREATED_AT]: noteItem[CREATED_AT],
           }}
           onDelete={deleteNote}
           onChange={updateNote}
