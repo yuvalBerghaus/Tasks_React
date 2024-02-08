@@ -9,12 +9,13 @@ import { TASK_OBJ, SORT } from "../constants";
 import BasicSelect from "./BasicSelect";
 
 function App() {
+  const { ASCENDING, DESCENDING } = SORT;
   const [notes, setNotes] = useState([]);
   const [next_id, setIdCounter] = useState(0);
-  const [sortOrder, setSortOrder] = useState(SORT.ASCENDING); // 'asc' or 'desc'
+  const [sortOrder, setSortOrder] = useState(ASCENDING); // 'asc' or 'desc'
   const [sortedNotes, setSortedNotes] = useState([]);
 
-  const { ID, TITLE, CONTENT, CHECKED, CREATED_AT, WARNING } = TASK_OBJ;
+  const { ID, TITLE, CONTENT, CHECKED, CREATED_AT } = TASK_OBJ;
 
   useEffect(() => {
     const fetchNotesData = async () => {
@@ -101,21 +102,27 @@ function App() {
     let sortedNotesCopy = [...notes];
     // TODO
     switch (sortOrder) {
-      case `${SORT.DESCENDING}_${ID}`:
+      case `${DESCENDING}_${ID}`:
         sortedNotesCopy.sort((a, b) => b[ID] - a[ID]);
         break;
-      case `${SORT.ASCENDING}_${ID}`:
+      case `${ASCENDING}_${ID}`:
         sortedNotesCopy.sort((a, b) => a[ID] - b[ID]);
         break;
-      case `${SORT.DESCENDING}_${CREATED_AT}`:
+      case `${DESCENDING}_${CREATED_AT}`:
         sortedNotesCopy.sort(
           (a, b) => new Date(b[CREATED_AT]) - new Date(a[CREATED_AT])
         );
         break;
-      case `${SORT.ASCENDING}_${CREATED_AT}`:
+      case `${ASCENDING}_${CREATED_AT}`:
         sortedNotesCopy.sort(
           (a, b) => new Date(a[CREATED_AT]) - new Date(b[CREATED_AT])
         );
+        break;
+      case `${DESCENDING}_${CHECKED}`:
+        sortedNotesCopy.sort((a, b) => (b[CHECKED] ? 1 : -1));
+        break;
+      case `${ASCENDING}_${CHECKED}`:
+        sortedNotesCopy.sort((a, b) => (a[CHECKED] ? 1 : -1));
         break;
       default:
     }

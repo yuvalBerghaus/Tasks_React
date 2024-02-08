@@ -5,16 +5,14 @@ import Zoom from "@mui/material/Zoom";
 import Tooltip from "@mui/material/Tooltip";
 import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import { STATUS, LABEL, TASK_OBJ, WARNING } from "../constants";
+import { STATUS, LABEL, TASK_OBJ, WARNING, TASK_INIT_OBJ } from "../constants";
 
 function CreateArea(props) {
+  const { TITLE, CONTENT, CHECKED } = TASK_OBJ;
+  const { EMPTY } = WARNING;
+  const { COMPLETED, INCOMPLETE } = STATUS;
   const [isExpanded, setExpanded] = useState(false);
-  const [note, setNote] = useState({
-    [TASK_OBJ.TITLE]: "",
-    [TASK_OBJ.CONTENT]: "",
-    [TASK_OBJ.CHECKED]: false,
-    [TASK_OBJ.CREATED_AT]: null,
-  });
+  const [note, setNote] = useState(TASK_INIT_OBJ);
 
   function handleChange(event) {
     const { name, value, type, checked } = event.target;
@@ -29,12 +27,7 @@ function CreateArea(props) {
   function submitNote(event) {
     if (validateForm()) {
       props.onAdd(note);
-      setNote({
-        [TASK_OBJ.TITLE]: "",
-        [TASK_OBJ.CONTENT]: "",
-        [TASK_OBJ.CHECKED]: false,
-        [TASK_OBJ.CREATED_AT]: null,
-      });
+      setNote(TASK_INIT_OBJ);
     }
     event.preventDefault();
   }
@@ -44,11 +37,8 @@ function CreateArea(props) {
   }
 
   function validateForm() {
-    if (
-      note[TASK_OBJ.TITLE].trim() === "" ||
-      note[TASK_OBJ.CONTENT].trim() === ""
-    ) {
-      alert(WARNING.EMPTY);
+    if (note[TITLE].trim() === "" || note[CONTENT].trim() === "") {
+      alert(EMPTY);
       return false;
     }
     return true;
@@ -59,19 +49,19 @@ function CreateArea(props) {
       <form className="create-note">
         {isExpanded && (
           <input
-            name={TASK_OBJ.TITLE}
+            name={TITLE}
             onChange={handleChange}
-            value={note[TASK_OBJ.TITLE]}
+            value={note[TITLE]}
             placeholder="Title"
             required
           />
         )}
 
         <textarea
-          name={TASK_OBJ.CONTENT}
+          name={CONTENT}
           onClick={expand}
           onChange={handleChange}
-          value={note[TASK_OBJ.CONTENT]}
+          value={note[CONTENT]}
           placeholder="Take a note..."
           rows={isExpanded ? 3 : 1}
           required
@@ -81,11 +71,11 @@ function CreateArea(props) {
             <Checkbox
               name="checked"
               {...LABEL}
-              checked={note[TASK_OBJ.CHECKED] || false}
+              checked={note[CHECKED] || false}
               onChange={handleChange}
             />
           }
-          label={note[TASK_OBJ.CHECKED] ? STATUS.COMPLETED : STATUS.INCOMPLETE}
+          label={note[CHECKED] ? COMPLETED : INCOMPLETE}
         />
         <Tooltip title="Add">
           <Zoom in={isExpanded}>

@@ -6,19 +6,20 @@ import Checkbox from "@mui/material/Checkbox";
 import { STATUS, LABEL, TASK_OBJ, WARNING } from "../constants";
 
 function Note(props) {
+  const { ID, TITLE, CONTENT, CHECKED, CREATED_AT } = TASK_OBJ;
   const [task, setTask] = useState({
-    [TASK_OBJ.ID]: props[TASK_OBJ.ID],
-    [TASK_OBJ.TITLE]: props[TASK_OBJ.TITLE],
-    [TASK_OBJ.CONTENT]: props[TASK_OBJ.CONTENT],
-    [TASK_OBJ.CHECKED]: props[TASK_OBJ.CHECKED],
-    [TASK_OBJ.CREATED_AT]: props[TASK_OBJ.CREATED_AT],
+    [ID]: props[ID],
+    [TITLE]: props[TITLE],
+    [CONTENT]: props[CONTENT],
+    [CHECKED]: props[CHECKED],
+    [CREATED_AT]: props[CREATED_AT],
   });
 
   const handleDelete = () => {
     const isConfirmed = window.confirm(WARNING.DELETE);
 
     if (isConfirmed) {
-      props.onDelete(task[TASK_OBJ.ID]);
+      props.onDelete(task[ID]);
     }
   };
   function handleChange(name, value) {
@@ -45,7 +46,7 @@ function Note(props) {
   function changeCheckBox() {
     const updatedTask = {
       ...task,
-      [TASK_OBJ.CHECKED]: !task[TASK_OBJ.CHECKED],
+      [CHECKED]: !task[CHECKED],
     };
 
     setTask(updatedTask);
@@ -57,28 +58,20 @@ function Note(props) {
       <h2
         contentEditable
         suppressContentEditableWarning={true}
-        onBlur={(event) =>
-          validateAndUpdate(TASK_OBJ.TITLE, event.target.textContent)
-        }
+        onBlur={(event) => validateAndUpdate(TITLE, event.target.textContent)}
       >
-        {task[TASK_OBJ.TITLE]}
+        {task[TITLE]}
       </h2>
       <p
         contentEditable
         suppressContentEditableWarning={true}
-        onBlur={(event) =>
-          validateAndUpdate(TASK_OBJ.CONTENT, event.target.textContent)
-        }
+        onBlur={(event) => validateAndUpdate(CONTENT, event.target.textContent)}
       >
-        {task[TASK_OBJ.CONTENT]}
+        {task[CONTENT]}
       </p>
-      <Checkbox
-        {...LABEL}
-        checked={task[TASK_OBJ.CHECKED]}
-        onChange={changeCheckBox}
-      />
+      <Checkbox {...LABEL} checked={task[CHECKED]} onChange={changeCheckBox} />
       <p className="status">
-        {task[TASK_OBJ.CHECKED] ? STATUS.COMPLETED : STATUS.INCOMPLETE}
+        {task[CHECKED] ? STATUS.COMPLETED : STATUS.INCOMPLETE}
       </p>
       <Tooltip title="Delete">
         <IconButton onClick={handleDelete}>
