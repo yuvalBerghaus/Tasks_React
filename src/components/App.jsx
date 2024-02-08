@@ -7,7 +7,6 @@ import CreateArea from "./CreateArea";
 import { fetchData, addNewNote, updateNoteById, deleteNoteById } from "../api";
 import { TASK_OBJ, SORT } from "../constants";
 import BasicSelect from "./BasicSelect";
-import Box from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
 
 function App() {
