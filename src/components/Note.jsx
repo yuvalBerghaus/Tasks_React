@@ -3,7 +3,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import Checkbox from "@mui/material/Checkbox";
-import { STATUS, LABEL, TASK_OBJ } from "../constants";
+import { STATUS, LABEL, TASK_OBJ, WARNING } from "../constants";
 
 function Note(props) {
   const [task, setTask] = useState({
@@ -11,19 +11,16 @@ function Note(props) {
     [TASK_OBJ.TITLE]: props[TASK_OBJ.TITLE],
     [TASK_OBJ.CONTENT]: props[TASK_OBJ.CONTENT],
     [TASK_OBJ.CHECKED]: props[TASK_OBJ.CHECKED],
+    [TASK_OBJ.CREATED_AT]: props[TASK_OBJ.CREATED_AT],
   });
 
-  function handleDelete() {
-    // Show confirmation prompt
-    const shouldDelete = window.confirm(
-      "Are you sure you want to delete this task?"
-    );
+  const handleDelete = () => {
+    const isConfirmed = window.confirm(WARNING.DELETE);
 
-    if (shouldDelete) {
+    if (isConfirmed) {
       props.onDelete(task[TASK_OBJ.ID]);
     }
-  }
-
+  };
   function handleChange(name, value) {
     setTask((prevTask) => ({
       ...prevTask,
