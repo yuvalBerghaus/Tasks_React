@@ -1,9 +1,5 @@
 # Tasks App
 
-<img width="947" alt="Screenshot 2024-02-08 073124" src="https://github.com/yuvalBerghaus/Tasks_React/assets/65304080/297f3f06-b46f-4bd6-b96a-6fe3f0e583ca">
-
-![Recording 2024-02-08 101940](https://github.com/yuvalBerghaus/Tasks_React/assets/65304080/586278f2-0930-43c5-8d06-03995ec3edd8)
-
 ## Key Features:
 
 - **Intuitive Task Management:** Easily create, update (by clicking on each task item - title or description will allow u to update), and delete tasks with a user-friendly interface.
@@ -18,3 +14,8 @@
 3. **Start the development server:**
    npm start<br />
    Open your browser and visit http://localhost:3000.
+
+<img width="947" alt="Screenshot 2024-02-08 073124" src="https://github.com/yuvalBerghaus/Tasks_React/assets/65304080/297f3f06-b46f-4bd6-b96a-6fe3f0e583ca">
+<br /><br />
+
+![Recording 2024-02-08 101940](https://github.com/yuvalBerghaus/Tasks_React/assets/65304080/0f33e980-c54b-4aec-9754-99062b42a35f)
